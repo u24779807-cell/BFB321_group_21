@@ -89,3 +89,49 @@
 
 }
 
+
+
+/* Login page styling */
+.login-container {
+    max-width: 400px;
+    margin: 80px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+    font-family: Arial, sans-serif;
+}
+
+.login-container h1 {
+    color: #285943;
+    text-align: center;
+}
+
+.login-container h2 {
+    margin-top: 30px;
+}
+
+.login-container label {
+    display: block;
+    margin-top: 18px;
+    margin-bottom: 6px;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.login-container button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 22px;
+    background: #285943;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
