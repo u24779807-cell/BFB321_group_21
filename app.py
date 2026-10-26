@@ -1,3 +1,4 @@
+
 from flask import (
     Flask,
     render_template,
@@ -572,6 +573,29 @@ def support():
     return render_template(
         "SUPPORT.html"
     )
+
+#=======================================
+# User registration
+#=======================================
+@ app.route("/register",methods=["GET","POST"])
+def register():
+    if request.method == "POST":
+        first_name = request.form.get("first_name", "").strip()
+        surname = request.form.get("surname", "").strip()
+        email = request.form.get("email", "").strip()
+        phone_number = request.form.get("phone_number", "").strip()
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "")
+        confirm_password = request.form.get("confirm_password", "")
+
+        if password != confirm_password:
+            flash("Passwords do not match.", "error")
+            return render_template("register.html")
+
+        flash("Registration submitted successfully! Database storage is not enabled yet.", "success")
+        return redirect(url_for("login"))
+
+    return render_template("register.html")
 
 
 # ==========================================
