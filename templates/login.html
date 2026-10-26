@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Login - Smart Spaza
+{% endblock %}
+
+
+{% block content %}
+
+<section class="login-page">
+
+    <div class="login-container">
+
+        <div class="login-icon">
+
+            <i class="fas fa-store"></i>
+
+        </div>
+
+
+        <h1>
+            Smart Spaza
+        </h1>
+
+        <p>
+            Food Network & Inventory Management
+        </p>
+
+
+        <h2>
+            Login
+        </h2>
+
+
+        <form
+            method="POST"
+            action="{{ url_for('login') }}"
+        >
+
+            <label for="username">
+                Username
+            </label>
+
+            <input
+                type="text"
+                id="username"
+                name="username"
+                required
+                autocomplete="username"
+            >
+
+
+            <label for="password">
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="password"
+                name="password"
+                required
+                autocomplete="current-password"
+            >
+
+
+            <button
+                type="submit"
+                class="primary-button login-button"
+            >
+                Log In
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,397 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+{{ product.name }} - Smart Spaza
+{% endblock %}
+
+
+{% block content %}
+
+<section class="product-page">
+
+    <div class="product-container">
+
+        <a
+            href="{{ url_for(
+                'inventory_page',
+                category=product.category
+            ) }}"
+            class="back-link"
+        >
+
+            <i class="fas fa-arrow-left"></i>
+
+            Back to Inventory
+
+        </a>
+
+
+        <div class="product-header">
+
+            <div>
+
+                <p class="eyebrow">
+                    CLASS {{ product.category }}
+                </p>
+
+                <h1>
+                    {{ product.name }}
+                </h1>
+
+            </div>
+
+
+            <span
+                class="status-badge status-{{ product.get_status()|lower|replace(' ', '-') }}"
+            >
+
+                {{ product.get_status() }}
+
+            </span>
+
+        </div>
+
+
+        <!-- ==================================
+             PRODUCT INFORMATION
+             ================================== -->
+
+        <div class="product-grid">
+
+
+            <div class="product-card">
+
+                <h2>
+                    Stock Information
+                </h2>
+
+
+                <div class="detail-row">
+
+                    <span>
+                        Current Quantity
+                    </span>
+
+                    <strong>
+                        {{ product.quantity }}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <span>
+                        Reorder Point
+                    </span>
+
+                    <strong>
+                        {{ "%.2f"|format(
+                            product.calculate_reorder_point()
+                        ) }}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <span>
+                        Reorder Alert
+                    </span>
+
+                    <strong>
+
+                        {% if product.reorder_alert() %}
+                            Yes
+                        {% else %}
+                            No
+                        {% endif %}
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="product-card">
+
+                <h2>
+                    Expiry Information
+                </h2>
+
+
+                <div class="detail-row">
+
+                    <span>
+                        Expiry Date
+                    </span>
+
+                    <strong>
+                        {{ product.expiry_date }}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <span>
+                        Days Until Expiry
+                    </span>
+
+                    <strong>
+                        {{ product.days_until_expiry() }}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <span>
+                        Status
+                    </span>
+
+                    <strong>
+                        {{ product.get_status() }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="product-card">
+
+                <h2>
+                    Supply Chain Calculations
+                </h2>
+
+
+                <div class="detail-row">
+
+                    <span>
+                        EOQ
+                    </span>
+
+                    <strong>
+                        {{ "%.2f"|format(
+                            product.calculate_eoq()
+                        ) }}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <span>
+                        Safety Stock
+                    </span>
+
+                    <strong>
+                        {{ "%.2f"|format(
+                            product.calculate_safety_stock()
+                        ) }}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <span>
+                        Reorder Point
+                    </span>
+
+                    <strong>
+                        {{ "%.2f"|format(
+                            product.calculate_reorder_point()
+                        ) }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="product-card">
+
+                <h2>
+                    Product Condition
+                </h2>
+
+
+                {% if product.flagged %}
+
+                    <p class="flagged-message">
+
+                        <i class="fas fa-flag"></i>
+
+                        This product has been flagged.
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Reason:
+                        </strong>
+
+                        {{ product.flag_reason }}
+
+                    </p>
+
+
+                    <form
+                        method="POST"
+                        action="{{ url_for(
+                            'unflag_product',
+                            product_id=product.id
+                        ) }}"
+                    >
+
+                        <button
+                            type="submit"
+                            class="secondary-action"
+                        >
+                            Remove Flag
+                        </button>
+
+                    </form>
+
+                {% else %}
+
+                    <p>
+                        This product has not been flagged.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- ==================================
+             ACTIONS
+             ================================== -->
+
+        <section class="product-actions">
+
+            <h2>
+                Product Actions
+            </h2>
+
+
+            <div class="action-buttons">
+
+                <a
+                    href="{{ url_for(
+                        'edit_product',
+                        product_id=product.id
+                    ) }}"
+                    class="primary-button"
+                >
+                    <i class="fas fa-edit"></i>
+                    Edit Product
+                </a>
+
+
+                {% if not product.flagged %}
+
+                <form
+                    method="POST"
+                    action="{{ url_for(
+                        'flag_product',
+                        product_id=product.id
+                    ) }}"
+                    class="flag-form"
+                >
+
+                    <select
+                        name="reason"
+                        aria-label="Reason for flagging product"
+                        required
+                    >
+
+                        <option value="">
+                            Flag reason
+                        </option>
+
+                        <option value="Spoiled">
+                            Spoiled
+                        </option>
+
+                        <option value="Damaged">
+                            Damaged
+                        </option>
+
+                        <option value="Packaging Problem">
+                            Packaging Problem
+                        </option>
+
+                        <option value="Expiry Date Uncertain">
+                            Expiry Date Uncertain
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+
+                    <button
+                        type="submit"
+                        class="warning-action"
+                    >
+
+                        <i class="fas fa-flag"></i>
+
+                        Flag Product
+
+                    </button>
+
+                </form>
+
+                {% endif %}
+
+
+                <form
+                    method="POST"
+                    action="{{ url_for(
+                        'remove_product',
+                        product_id=product.id
+                    ) }}"
+                    onsubmit="return confirm(
+                        'Remove this product from active inventory?'
+                    );"
+                >
+
+                    <button
+                        type="submit"
+                        class="danger-action"
+                    >
+
+                        <i class="fas fa-trash"></i>
+
+                        Remove Product
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</section>
+
+{% endblock %}
