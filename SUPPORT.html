@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Support
+{% endblock %}
+
+
+{% block content %}
+
+<section class="content-page">
+
+    <div class="content-container">
+
+        <p class="eyebrow">
+            SMART SPAZA
+        </p>
+
+        <h1>
+            Support
+        </h1>
+
+        <p>
+            If you experience problems using the inventory
+            management system, use the information below
+            to identify the issue.
+        </p>
+
+
+        <div class="support-grid">
+
+            <article class="support-card">
+
+                <i class="fas fa-box"></i>
+
+                <h2>
+                    Product Problems
+                </h2>
+
+                <p>
+                    Check the product information and ensure
+                    that quantity, demand and expiry information
+                    has been entered correctly.
+                </p>
+
+            </article>
+
+
+            <article class="support-card">
+
+                <i class="fas fa-calendar-alt"></i>
+
+                <h2>
+                    Expiry Problems
+                </h2>
+
+                <p>
+                    Confirm that the expiry date is entered using
+                    the correct date format.
+                </p>
+
+            </article>
+
+
+            <article class="support-card">
+
+                <i class="fas fa-calculator"></i>
+
+                <h2>
+                    Reorder Problems
+                </h2>
+
+                <p>
+                    Reorder recommendations depend on the
+                    demand, lead time and safety-stock inputs.
+                </p>
+
+            </article>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

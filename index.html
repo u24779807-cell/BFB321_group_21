@@ -1,0 +1,339 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Smart Spaza Dashboard
+{% endblock %}
+
+
+{% block content %}
+
+<section class="dashboard-page">
+
+    <div class="dashboard-container">
+
+        <!-- ==================================
+             HEADER
+             ================================== -->
+
+        <div class="dashboard-header">
+
+            <div>
+
+                <p class="eyebrow">
+                    SMART SPAZA
+                </p>
+
+                <h1>
+                    Inventory Dashboard
+                </h1>
+
+                <p class="dashboard-subtitle">
+                    Monitor stock levels, expiry dates
+                    and replenishment requirements.
+                </p>
+
+            </div>
+
+
+            <a
+                href="{{ url_for('add_product') }}"
+                class="primary-button"
+            >
+                <i class="fas fa-plus"></i>
+                Add Product
+            </a>
+
+        </div>
+
+
+        <!-- ==================================
+             SUMMARY CARDS
+             ================================== -->
+
+        <section
+            class="summary-grid"
+            aria-label="Inventory summary"
+        >
+
+            <article class="summary-card">
+
+                <div class="summary-icon">
+                    <i class="fas fa-boxes"></i>
+                </div>
+
+                <div>
+
+                    <p>
+                        Total Products
+                    </p>
+
+                    <strong>
+                        {{ statistics.total_products }}
+                    </strong>
+
+                </div>
+
+            </article>
+
+
+            <article class="summary-card">
+
+                <div class="summary-icon warning-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+
+                <div>
+
+                    <p>
+                        Expiring Soon
+                    </p>
+
+                    <strong>
+                        {{ statistics.expiring_soon }}
+                    </strong>
+
+                </div>
+
+            </article>
+
+
+            <article class="summary-card">
+
+                <div class="summary-icon danger-icon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+
+                <div>
+
+                    <p>
+                        Expired
+                    </p>
+
+                    <strong>
+                        {{ statistics.expired }}
+                    </strong>
+
+                </div>
+
+            </article>
+
+
+            <article class="summary-card">
+
+                <div class="summary-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+
+                <div>
+
+                    <p>
+                        Low Stock
+                    </p>
+
+                    <strong>
+                        {{ statistics.low_stock }}
+                    </strong>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- ==================================
+             ATTENTION SECTION
+             ================================== -->
+
+        <section class="dashboard-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Products Requiring Attention
+                    </h2>
+
+                    <p>
+                        Review products that may require
+                        action.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {% if attention_products %}
+
+            <div class="responsive-table">
+
+                <table>
+
+                    <caption class="visually-hidden">
+                        Products requiring attention
+                    </caption>
+
+                    <thead>
+
+                        <tr>
+
+                            <th scope="col">
+                                Product
+                            </th>
+
+                            <th scope="col">
+                                Quantity
+                            </th>
+
+                            <th scope="col">
+                                Expiry
+                            </th>
+
+                            <th scope="col">
+                                Status
+                            </th>
+
+                            <th scope="col">
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for product in attention_products %}
+
+                        <tr>
+
+                            <td>
+                                <strong>
+                                    {{ product.name }}
+                                </strong>
+                            </td>
+
+                            <td>
+                                {{ product.quantity }}
+                            </td>
+
+                            <td>
+                                {{ product.expiry_date }}
+                            </td>
+
+                            <td>
+
+                                <span class="status-badge status-{{ product.get_status()|lower|replace(' ', '-') }}">
+
+                                    {{ product.get_status() }}
+
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <a
+                                    href="{{ url_for(
+                                        'product_detail',
+                                        product_id=product.id
+                                    ) }}"
+                                    class="small-button"
+                                >
+                                    View
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+            <div class="empty-state">
+
+                <i class="fas fa-check-circle"></i>
+
+                <h3>
+                    Everything looks good
+                </h3>
+
+                <p>
+                    There are currently no products
+                    requiring attention.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- ==================================
+             QUICK ACTIONS
+             ================================== -->
+
+        <section class="quick-actions">
+
+            <a
+                href="{{ url_for('inventory_page', category='A') }}"
+                class="action-card"
+            >
+
+                <i class="fas fa-box"></i>
+
+                <div>
+
+                    <h3>
+                        Class A Inventory
+                    </h3>
+
+                    <p>
+                        View and manage Class A products.
+                    </p>
+
+                </div>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('inventory_page', category='B') }}"
+                class="action-card"
+            >
+
+                <i class="fas fa-box-open"></i>
+
+                <div>
+
+                    <h3>
+                        Class B Inventory
+                    </h3>
+
+                    <p>
+                        View and manage Class B products.
+                    </p>
+
+                </div>
+
+            </a>
+
+        </section>
+
+    </div>
+
+</section>
+
+{% endblock %}
