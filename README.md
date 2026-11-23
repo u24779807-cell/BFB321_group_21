@@ -43,3 +43,56 @@ Small food vendors often lack a simple and reliable system for tracking stock an
 8. Run `app.py` to launch the Flask application.
 9. Open the local website address in your browser.
 
+### 6. API Endpoints
+1. POST /api/login - User authentication
+2. GET /api/inventory - Get all inventory items
+3. POST /api/inventory - Add new product
+4. PUT /api/inventory/<id> - Update product
+5. GET /api/stats - Get dashboard statistics
+
+### 7. Troubleshooting Common Issues
+python app.py --port=8000
+
+## Database Entity Relationship Diagram
+
+```mermaid
+erDiagram
+    users {
+        INTEGER user_id PK
+        VARCHAR username UK
+        VARCHAR password_hash
+        VARCHAR email UK
+        VARCHAR role
+        DATETIME created_at
+    }
+    
+    inventory {
+        INTEGER item_id PK
+        VARCHAR item_name
+        VARCHAR category
+        INTEGER quantity
+        DATE expiry_date
+        INTEGER supplier_id FK
+        DATETIME added_date
+        VARCHAR status
+    }
+    
+    suppliers {
+        INTEGER supplier_id PK
+        VARCHAR supplier_name
+        VARCHAR contact_email
+        VARCHAR phone
+    }
+    
+    waste_records {
+        INTEGER waste_id PK
+        INTEGER item_id FK
+        INTEGER quantity_wasted
+        TEXT reason
+        DATETIME date_recorded
+        INTEGER recorded_by FK
+    }
+
+    users ||--o{ waste_records : "records"
+    suppliers ||--o{ inventory : "supplies"
+    inventory ||--o{ waste_records : "wasted_from"
