@@ -61,7 +61,7 @@ The MySQL database can be backed up using MySQL Workbench:
 6. Choose a destination and save the backup as `backup.sql`.
 7. Click Start Export.
 
-### 8. Database Restoration
+### 8. Database Restoration (B4)
 To restore a database backup:
 
 1. Open MySQL Workbench.
@@ -71,7 +71,7 @@ To restore a database backup:
 5. Select the target schema, `smart_spaza_shop`.
 6. Start the import.
 
-### 9. Rollback Procedure
+### 9. Rollback Procedure (B4)
 If a database modification causes errors or unexpected results:
 
 1. Stop the application to prevent further database changes.
