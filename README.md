@@ -24,13 +24,13 @@ Small food vendors often lack a simple and reliable system for tracking stock an
  Flask 
  MySQL 
 ### 4. Project Structure (B4)
--**app.py**– Main Flask application.
--**Inventory.py**– Supply chain and inventory management model.
--**config.py** – Database connection configuration.
--**schema.sql** – Database table definitions.
--**seed.sql** – Sample database data.
--**templates/** – HTML templates used by the website. These templates are titled Support, user guide, add_product,base,edit_product, index,inventory, login,product_details, register 
--**static/**– contains the css file.
+- **app.py**– Main Flask application.
+- **Inventory.py**– Supply chain and inventory management model.
+- **config.py** – Database connection configuration.
+- **schema.sql** – Database table definitions.
+- **seed.sql** – Sample database data.
+- **templates/** – HTML templates used by the website. These templates are titled Support, user guide, add_product,base,edit_product, index,inventory, login,product_details, register 
+- **static/**– contains the css file.
 
 ### 5. How to run the website (B4) 
 1. Clone the project repository.
