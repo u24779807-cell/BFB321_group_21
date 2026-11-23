@@ -1,9 +1,9 @@
 # BFB321_group_21
 Members:
-KL Mohale - 23792788
-MG Nsibande - 21565326
-NL Sethole - 24779807
-NV Vilakati - 22911996
+- KL Mohale - 23792788
+- MG Nsibande - 21565326
+- NL Sethole - 24779807
+- NV Vilakati - 22911996
 ## Project Title: Smart Spaza Food Network 
 ### 1. project description (B4)
 Small food vendors often lack a simple and reliable system for tracking stock and monitoring expiry dates. This can lead to food waste and loss of sales. Therefore, this project focuses on creating an expiry date and stock monitoring system for small food vendors/Tuckshops. The project uses html,css,flask and python with MySQL database for storing and managing information.
