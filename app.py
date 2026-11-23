@@ -1,4 +1,5 @@
 import os
+import logging
 from flask import (
     Flask,
     render_template,
@@ -44,8 +45,11 @@ if environment == "production":
     app.config["ENV"]="production"
     config.Production.validate()
 
-
-
+logging.basicConfig (
+    filename="app.log",
+    level=logging.INFO,
+    format="%(asctime)s- %(levelname)s - %(message)s"
+    )
 
 # ==========================================
 # HELPER FUNCTIONS
@@ -185,7 +189,7 @@ def login():
                 flash("Invalid username or password.", "error")
 
         except Exception as error:
-            print("Login error:", error)
+            logging.exception ("Login error occured")
             flash("Something went wrong. Please try again.", "error")
 
         finally:
@@ -261,7 +265,7 @@ def inventory_page(category):
             products.append(item)
 
     except Exception as error:
-        print("Inventory retrieval error:", error)
+        logging.exception("Inventory retrieval error:")
         return "Could not load inventory.", 500
 
     finally:
@@ -378,7 +382,7 @@ def add_product():
             if connection:
                 connection.rollback()
 
-            print("Product insertion error:", error)
+            logging.exception("Product insertion error:")
             flash("Could not save product. Please try again.", "error")
 
         finally:

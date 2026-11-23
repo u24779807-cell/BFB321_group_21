@@ -3,10 +3,29 @@ import os
 import mysql.connector
 from dotenv import load_dotenv
 
-# Load environment variables from .env
+
 load_dotenv()
 
-# Create a function to connect to MySQL
+class Config:
+    SECRET_KEY = os.getenv("SECRET_KEY")
+    DEBUG = False
+    TESTING = False
+
+class DevelopmentConfig(Config):
+    DEBUG = True
+
+class TestingConfig(Config):
+    TESTING = True
+
+class ProductionConfig(Config):
+    @classmethod
+    def validate (cls):
+        if not cls.SECRET_KEY:
+            raise ValueError(
+                "SECRET_KEY must be set in production."
+            )
+
+
 def get_db_connection():
     connection = mysql.connector.connect(
         host=os.getenv("DB_HOST"),
@@ -16,3 +35,4 @@ def get_db_connection():
     )
 
     return connection
+    

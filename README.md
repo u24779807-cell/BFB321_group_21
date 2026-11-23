@@ -49,3 +49,34 @@ Small food vendors often lack a simple and reliable system for tracking stock an
 3. POST /api/inventory - Add new product
 4. PUT /api/inventory/<id> - Update product
 5. GET /api/stats - Get dashboard statistics
+
+### 7. Database Backup (B4)
+The MySQL database can be backed up using MySQL Workbench:
+
+1. Open MySQL Workbench and connect to the database server.
+2. Navigate to Server → Data Export.
+3. Select the `smart_spaza_shop` database.
+4. Choose Dump Structure and Data.
+5. Select Export to Self-Contained File.
+6. Choose a destination and save the backup as `backup.sql`.
+7. Click Start Export.
+
+### 8. Database Restoration
+To restore a database backup:
+
+1. Open MySQL Workbench.
+2. Navigate to Server → Data Import.
+3. Select Import from Self-Contained File.
+4. Browse for the saved `backup.sql` file.
+5. Select the target schema, `smart_spaza_shop`.
+6. Start the import.
+
+### 9. Rollback Procedure
+If a database modification causes errors or unexpected results:
+
+1. Stop the application to prevent further database changes.
+2. Identify the most recent valid database backup.
+3. Restore the backup using MySQL Workbench.
+4. Check that the database tables and records have been restored.
+5. Restart the Flask application and confirm that the system works correctly.
+
