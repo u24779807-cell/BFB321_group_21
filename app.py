@@ -5,10 +5,15 @@ from flask import (
     request,
     redirect,
     url_for,
-    flash
+    flash,
+    session,
 )
 
 from inventory import InventoryItem, inventory
+from config import get_db_connection
+from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash
+
 
 
 # ==========================================
@@ -120,38 +125,60 @@ def home():
 # LOGIN
 # ==========================================
 
-@app.route(
-    "/login",
-    methods=["GET", "POST"]
-)
+
+@app.route("/login", methods=["GET", "POST"])
 def login():
 
     if request.method == "POST":
 
-        username = request.form.get(
-            "username",
-            ""
-        ).strip()
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "")
 
-        password = request.form.get(
-            "password",
-            ""
-        ).strip()
+        if not username or not password:
+            flash("Please enter your username and password.", "error")
+            return render_template("login.html")
 
-        if username and password:
+        connection = None
+        cursor = None
 
-            return redirect(
-                url_for("home")
+        try:
+            connection = get_db_connection()
+            cursor = connection.cursor(dictionary=True)
+
+            cursor.execute(
+                """
+                SELECT user_id, username, password_hash
+                FROM users
+                WHERE username = %s
+                """,
+                (username,)
             )
 
-        flash(
-            "Please enter your username and password.",
-            "error"
-        )
+            user = cursor.fetchone()
 
-    return render_template(
-        "login.html"
-    )
+            if user and check_password_hash(user["password_hash"], password):
+
+                session["user_id"] = user["user_id"]
+                session["username"] = user["username"]
+
+                flash("Login successful!", "success")
+                return redirect(url_for("home"))
+
+            else:
+                flash("Invalid username or password.", "error")
+
+        except Exception as error:
+            print("Login error:", error)
+            flash("Something went wrong. Please try again.", "error")
+
+        finally:
+            if cursor:
+                cursor.close()
+
+            if connection and connection.is_connected():
+                connection.close()
+
+    return render_template("login.html")
 
 
 # ==========================================
@@ -164,25 +191,74 @@ def inventory_page(category):
     category = category.upper()
 
     if category not in ["A", "B"]:
-
         return "Invalid inventory category.", 404
 
-    products = [
+    connection = None
+    cursor = None
 
-        item
+    try:
+        connection = get_db_connection()
+        cursor = connection.cursor(dictionary=True)
 
-        for item in get_active_inventory()
+        cursor.execute(
+            """
+            SELECT *
+            FROM products
+            WHERE user_id = %s
+            AND category = %s
+            AND removed = 0
+            """,
+            (session["user_id"], category)
+        )
 
-        if item.category == category
+        rows = cursor.fetchall()
 
-    ]
+        products = []
+
+        for row in rows:
+
+            expiry_date = row["expiry_date"]
+
+            if hasattr(expiry_date, "strftime"):
+                expiry_date = expiry_date.strftime("%Y-%m-%d")
+
+            item = InventoryItem(
+                name=row["name"],
+                quantity=row["quantity"],
+                expiry_date=expiry_date,
+                annual_demand=float(row["annual_demand"]),
+                ordering_cost=float(row["ordering_cost"]),
+                holding_cost=float(row["holding_cost"]),
+                avg_daily_demand=float(row["avg_daily_demand"]),
+                lead_time=int(row["lead_time"]),
+                demand_std_dev=float(row["demand_std_dev"]),
+                category=row["category"]
+            )
+
+        
+            item.id = row["product_id"]
+            item.flagged = bool(row["flagged"])
+            item.flag_reason = row["flag_reason"] or ""
+            item.removed = bool(row["removed"])
+
+            products.append(item)
+
+    except Exception as error:
+        print("Inventory retrieval error:", error)
+        return "Could not load inventory.", 500
+
+    finally:
+        if cursor:
+            cursor.close()
+
+        if connection and connection.is_connected():
+            connection.close()
 
     return render_template(
         "inventory.html",
         products=products,
         category=category
     )
-
 
 # ==========================================
 # PRODUCT DETAILS
@@ -207,132 +283,95 @@ def product_detail(product_id):
 
 # ==========================================
 # ADD PRODUCT
-# ==========================================
+# ========================================
 
-@app.route(
-    "/add-product",
-    methods=["GET", "POST"]
-)
+@app.route("/add-product", methods=["GET", "POST"])
 def add_product():
 
     if request.method == "POST":
 
+        connection = None
+        cursor = None
+
         try:
-
-            name = request.form[
-                "name"
-            ].strip()
-
-            quantity = int(
-                request.form[
-                    "quantity"
-                ]
-            )
-
-            expiry_date = request.form[
-                "expiry_date"
-            ]
-
-            annual_demand = float(
-                request.form[
-                    "annual_demand"
-                ]
-            )
-
-            ordering_cost = float(
-                request.form[
-                    "ordering_cost"
-                ]
-            )
-
-            holding_cost = float(
-                request.form[
-                    "holding_cost"
-                ]
-            )
-
-            avg_daily_demand = float(
-                request.form[
-                    "avg_daily_demand"
-                ]
-            )
-
-            lead_time = float(
-                request.form[
-                    "lead_time"
-                ]
-            )
-
-            demand_std_dev = float(
-                request.form[
-                    "demand_std_dev"
-                ]
-            )
-
-            category = request.form[
-                "category"
-            ]
-
+            name = request.form["name"].strip()
+            quantity = int(request.form["quantity"])
+            expiry_date = request.form["expiry_date"]
+            annual_demand = float(request.form["annual_demand"])
+            ordering_cost = float(request.form["ordering_cost"])
+            holding_cost = float(request.form["holding_cost"])
+            avg_daily_demand = float(request.form["avg_daily_demand"])
+            lead_time = int(request.form["lead_time"])
+            demand_std_dev = float(request.form["demand_std_dev"])
+            category = request.form["category"]
 
             new_product = InventoryItem(
-
                 name=name,
-
                 quantity=quantity,
-
                 expiry_date=expiry_date,
-
                 annual_demand=annual_demand,
-
                 ordering_cost=ordering_cost,
-
                 holding_cost=holding_cost,
-
                 avg_daily_demand=avg_daily_demand,
-
                 lead_time=lead_time,
-
                 demand_std_dev=demand_std_dev,
-
                 category=category
-
             )
 
+            connection = get_db_connection()
+            cursor = connection.cursor()
 
-            inventory.append(
-                new_product
-            )
-
-
-            flash(
-                f"{name} was added successfully.",
-                "success"
-            )
-
-
-            return redirect(
-                url_for(
-                    "inventory_page",
-                    category=category
+            cursor.execute(
+                """
+                INSERT INTO products
+                (user_id, name, quantity, expiry_date,
+                 annual_demand, ordering_cost, holding_cost,
+                 avg_daily_demand, lead_time, demand_std_dev, category)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """,
+                (
+                    session["user_id"],
+                    name,
+                    quantity,
+                    expiry_date,
+                    annual_demand,
+                    ordering_cost,
+                    holding_cost,
+                    avg_daily_demand,
+                    lead_time,
+                    demand_std_dev,
+                    category
                 )
             )
 
+            connection.commit()
 
-        except (
-            ValueError,
-            KeyError
-        ) as error:
+            inventory.append(new_product)
 
-            flash(
-                f"Could not add product: {error}",
-                "error"
+            flash(f"{name} was added successfully.", "success")
+
+            return redirect(
+                url_for("inventory_page", category=category)
             )
 
+        except (ValueError, KeyError) as error:
+            flash(f"Could not add product: {error}", "error")
 
-    return render_template(
-        "add_product.html"
-    )
+        except Exception as error:
+            if connection:
+                connection.rollback()
 
+            print("Product insertion error:", error)
+            flash("Could not save product. Please try again.", "error")
+
+        finally:
+            if cursor:
+                cursor.close()
+
+            if connection and connection.is_connected():
+                connection.close()
+
+    return render_template("add_product.html")
 
 # ==========================================
 # EDIT PRODUCT
@@ -577,9 +616,11 @@ def support():
 #=======================================
 # User registration
 #=======================================
-@ app.route("/register",methods=["GET","POST"])
+
+@app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
+
         first_name = request.form.get("first_name", "").strip()
         surname = request.form.get("surname", "").strip()
         email = request.form.get("email", "").strip()
@@ -588,12 +629,76 @@ def register():
         password = request.form.get("password", "")
         confirm_password = request.form.get("confirm_password", "")
 
+        # Check that all fields have been completed
+        if not all([first_name, surname, email, phone_number,
+                    username, password, confirm_password]):
+            flash("Please complete all fields.", "error")
+            return render_template("register.html")
+
+        # Check password length
+        if len(password) < 8:
+            flash("Password must contain at least 8 characters.", "error")
+            return render_template("register.html")
+
+        # Check that passwords match
         if password != confirm_password:
             flash("Passwords do not match.", "error")
             return render_template("register.html")
 
-        flash("Registration submitted successfully! Database storage is not enabled yet.", "success")
-        return redirect(url_for("login"))
+        connection = None
+        cursor = None
+
+        try:
+            connection = get_db_connection()
+            cursor = connection.cursor()
+
+            # Check whether email or username already exists
+            cursor.execute(
+                """
+                SELECT user_id FROM users
+                WHERE email = %s OR username = %s
+                """,
+                (email, username)
+            )
+
+            existing_user = cursor.fetchone()
+
+            if existing_user:
+                flash("Email or username already exists.", "error")
+                return render_template("register.html")
+
+            # Hash the password before storing it
+            password_hash = generate_password_hash(password)
+
+            # Save the new user in MySQL
+            cursor.execute(
+                """
+                INSERT INTO users
+                (first_name, surname, email, phone_number,
+                 username, password_hash)
+                VALUES (%s, %s, %s, %s, %s, %s)
+                """,
+                (first_name, surname, email, phone_number,
+                 username, password_hash)
+            )
+
+            connection.commit()
+
+            flash("Registration successful! You can now log in.", "success")
+            return redirect(url_for("login"))
+
+        except Exception as error:
+            if connection:
+                connection.rollback()
+
+            print("Registration error:", error)
+            flash("Something went wrong during registration. Please try again.", "error")
+
+        finally:
+            if cursor:
+                cursor.close()
+            if connection and connection.is_connected():
+                connection.close()
 
     return render_template("register.html")
 
