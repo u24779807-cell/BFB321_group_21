@@ -1,3 +1,4 @@
+
 import math
 from datetime import datetime, date
 
@@ -24,8 +25,22 @@ class InventoryItem:
         category="A"
     ):
 
+        # ==========================================
+        # INPUT VALIDATION
+        # ==========================================
+
+        name = str(name).strip()
+
         if not name:
             raise ValueError("Product name cannot be empty.")
+
+        quantity = int(quantity)
+        annual_demand = float(annual_demand)
+        ordering_cost = float(ordering_cost)
+        holding_cost = float(holding_cost)
+        avg_daily_demand = float(avg_daily_demand)
+        lead_time = float(lead_time)
+        demand_std_dev = float(demand_std_dev)
 
         if quantity < 0:
             raise ValueError("Quantity cannot be negative.")
@@ -48,16 +63,34 @@ class InventoryItem:
         if demand_std_dev < 0:
             raise ValueError("Demand standard deviation cannot be negative.")
 
-        # Unique ID for the product
+        # Validate expiry date
+        date.fromisoformat(str(expiry_date))
+
+        # Validate category
+        category = str(category).strip().upper()
+
+        if category not in ("A", "B"):
+            raise ValueError("Category must be A or B.")
+
+        # ==========================================
+        # UNIQUE PRODUCT ID
+        # ==========================================
+
         self.id = InventoryItem._next_id
         InventoryItem._next_id += 1
 
-        # Basic product information
+        # ==========================================
+        # BASIC PRODUCT INFORMATION
+        # ==========================================
+
         self.name = name
         self.quantity = quantity
-        self.expiry_date = expiry_date
+        self.expiry_date = str(expiry_date)
 
-        # Supply-chain information
+        # ==========================================
+        # SUPPLY-CHAIN INFORMATION
+        # ==========================================
+
         self.annual_demand = annual_demand
         self.ordering_cost = ordering_cost
         self.holding_cost = holding_cost
@@ -66,10 +99,16 @@ class InventoryItem:
         self.lead_time = lead_time
         self.demand_std_dev = demand_std_dev
 
-        # Inventory classification
-        self.category = category.upper()
+        # ==========================================
+        # INVENTORY CLASSIFICATION
+        # ==========================================
 
-        # Product condition
+        self.category = category
+
+        # ==========================================
+        # PRODUCT CONDITION
+        # ==========================================
+
         self.flagged = False
         self.flag_reason = ""
 
@@ -97,6 +136,9 @@ class InventoryItem:
 
     def calculate_safety_stock(self, z_score=1.65):
 
+        if z_score < 0:
+            raise ValueError("Z-score cannot be negative.")
+
         return (
             z_score
             * self.demand_std_dev
@@ -115,6 +157,14 @@ class InventoryItem:
             self.avg_daily_demand * self.lead_time
             + safety_stock
         )
+
+    # ==========================================
+    # ORDERS PER YEAR
+    # ==========================================
+
+    def calculate_orders_per_year(self):
+
+        return self.annual_demand / self.calculate_eoq()
 
     # ==========================================
     # DAYS UNTIL EXPIRY
@@ -269,6 +319,11 @@ if __name__ == "__main__":
         print(
             f"Reorder Point: "
             f"{item.calculate_reorder_point():.2f}"
+        )
+
+        print(
+            f"Orders Per Year: "
+            f"{item.calculate_orders_per_year():.2f}"
         )
 
         print(

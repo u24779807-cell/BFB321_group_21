@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Page not found - Smart Spaza{% endblock %}
+{% block content %}
+<section class="content-page"><div class="content-container">
+<p class="eyebrow">SMART SPAZA</p><h1>Page not found</h1>
+<p>The page or product you requested could not be found.</p>
+<a class="primary-button" href="{{ url_for('home') }}">Return to dashboard</a>
+</div></section>
+{% endblock %}

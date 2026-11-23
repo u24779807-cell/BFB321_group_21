@@ -1,8 +1,13 @@
-.env
 __pycache__/
-*.pyc
+*.py[cod]
+.pytest_cache/
 .venv/
 venv/
+.env
+*.db
+instance/
+.DS_Store
 app.log
-*.log 
+*.log
+
 
