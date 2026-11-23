@@ -1,4 +1,4 @@
-
+import os
 from flask import (
     Flask,
     render_template,
@@ -26,8 +26,25 @@ app = Flask(
     static_url_path="/static"
 )
 
-# Needed for flash messages
-app.secret_key = "smart-spaza-development-key"
+# Load environment-specific configuration
+environment = os.getenv("FLASK_ENV", "development")
+
+configurations = {
+    "development": "config.DevelopmentConfig",
+    "testing": "config.TestingConfig",
+    "production": "config.ProductionConfig"
+}
+
+if environment not in configurations:
+    raise ValuError("Invalid FLASK_ENV setting.")
+
+app.config.from_object(configurations[environment])
+
+if environment == "production":
+    app.config["ENV"]="production"
+    config.Production.validate()
+
+
 
 
 # ==========================================
