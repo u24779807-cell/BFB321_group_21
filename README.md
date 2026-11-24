@@ -4,7 +4,7 @@
 | Name | User name | Student number |
 | :---: | :---: | :---: |
 | KL Mohale | Babygurllisa01 | u23792788 |
-| MG Nsibande | | u21565326 |
+| MG Nsibande |u21565326  | u21565326 |
 |NL Sethole|u24779807-cell|u24779807|
 |NV Vilakati|Notsile567|u22911996|
 ## Project Title: Smart Spaza Food Network 
