@@ -57,14 +57,7 @@ Small food vendors often lack a simple and reliable system for tracking stock an
 8. Run `app.py` to launch the Flask application.
 9. Open the local website address in your browser.
 
-### 6. API Endpoints
-1. POST /api/login - User authentication
-2. GET /api/inventory - Get all inventory items
-3. POST /api/inventory - Add new product
-4. PUT /api/inventory/<id> - Update product
-5. GET /api/stats - Get dashboard statistics
-
-### 7. Database Backup (B4)
+### 6. Database Backup (B4)
 The MySQL database can be backed up using MySQL Workbench:
 
 1. Open MySQL Workbench and connect to the database server.
@@ -75,7 +68,7 @@ The MySQL database can be backed up using MySQL Workbench:
 6. Choose a destination and save the backup as `backup.sql`.
 7. Click Start Export.
 
-### 8. Database Restoration (B4)
+### 7. Database Restoration (B4)
 To restore a database backup:
 
 1. Open MySQL Workbench.
@@ -85,7 +78,7 @@ To restore a database backup:
 5. Select the target schema, `smart_spaza_shop`.
 6. Start the import.
 
-### 9. Rollback Procedure (B4)
+### 8. Rollback Procedure (B4)
 If a database modification causes errors or unexpected results:
 
 1. Stop the application to prevent further database changes.
@@ -94,7 +87,7 @@ If a database modification causes errors or unexpected results:
 4. Check that the database tables and records have been restored.
 5. Restart the Flask application and confirm that the system works correctly.
 
-### 10. Configuration
+### 9. Configuration
 Copy `.env.example` to `.env` and configure the equivalent environment variables in your terminal or hosting platform. The application reads environment variables directly; install a dotenv loader if you want `.env` files to be loaded automatically.
 
 - `SECRET_KEY`: set a long, random secret before deployment.
@@ -104,7 +97,7 @@ Copy `.env.example` to `.env` and configure the equivalent environment variables
 
 Do not commit real passwords, secret keys or database credentials.
 
-### 11. Supply-chain model and assumptions
+### 10. Supply-chain model and assumptions
 The calculations are kept in `inventory.py`, independent of Flask and the database.
 
 | Measure | Formula | Interpretation |
@@ -118,7 +111,7 @@ Where `D` is annual demand (units/year), `S` is ordering cost per order, `H` is 
 
 **Assumptions:** demand and lead time are treated as stable for these introductory calculations; the safety-stock formula assumes independent daily demand variation and a fixed lead time; costs must use consistent currency/time units. The default `z=1.65` is an approximate 95% one-sided service factor. EOQ is a planning estimate and does not account for supplier minimum order quantities, quantity discounts, perishability, shelf capacity or cash constraints. For perishable products, expiry and storage constraints should override an otherwise calculated order quantity.
 
-### 12. Application routes
+### 11. Application routes
 
 | Route | Method | Purpose |
 |---|---|---|
@@ -139,13 +132,13 @@ Where `D` is annual demand (units/year), `S` is ordering cost per order, `H` is 
 | `/api/dashboard` | GET | Return KPI data (authenticated) |
 
 All inventory and API routes require a logged-in account. Registration and login are public.
-### 13. Data model
+### 12. Data model
 
 `users` stores account identity and a Werkzeug password hash; passwords are never stored in plain text. `products` stores stock, expiry, supply-chain inputs, category, flag information, removal state and timestamps. Product records are soft-removed so historical records are not immediately deleted.
 
 The SQLite schema is created by `init_db()` in `app.py`. The MySQL 8 DDL equivalent is in `database/schema.sql`.
 
-### 14. Testing
+### 13. Testing
 
 Run the tests from the project root:
 
@@ -155,13 +148,13 @@ python -m pytest -q
 
 The tests cover EOQ, safety stock, reorder point, orders per year, expiry classification, product flagging, validation, registration/login, product CRUD/flagging/removal, dashboard rendering and JSON API responses. Tests use a temporary SQLite database and do not modify the normal development inventory.
 
-### 15. Three end-to-end workflows
+### 14. Three end-to-end workflows
 
 1. **Create product:** register/log in → Add Product → validate submitted fields → insert the product into SQLite → redirect to its details page.
 2. **Expiry and condition monitoring:** open a class inventory or dashboard → calculate expiry status from today's date → flag damaged/spoiled goods → save the flag and reason → dashboard and details reflect the change.
 3. **Replenishment:** open product details → calculate EOQ, safety stock and ROP → compare on-hand quantity with ROP → display a low-stock alert when quantity is at or below ROP.
 
-### 16. Deployment and operational notes
+### 15. Deployment and operational notes
 
 - Use a production WSGI server (for example Gunicorn) rather than Flask's development server.
 - Set a unique `SECRET_KEY`, disable debug mode and use HTTPS.
@@ -170,7 +163,7 @@ The tests cover EOQ, safety stock, reorder point, orders per year, expiry classi
 - Add CSRF protection (for example Flask-WTF), rate limiting and stricter account verification before public production use.
 - Keep supplier-specific order decisions, stock adjustments and disposal records auditable as the system is extended.
 
-### 17. Limitations and future improvements
+### 16. Limitations and future improvements
 
 The supplied project is a working academic prototype. It currently uses a single shared inventory rather than tenant-separated shop accounts, and it does not yet implement supplier orders, stock receiving, audit history, barcode scanning, email alerts or a live MySQL adapter. The local prototype stores all product rows in one SQLite database. Those capabilities should be implemented and tested before commercial deployment.
 
