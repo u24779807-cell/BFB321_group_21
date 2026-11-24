@@ -173,6 +173,7 @@ Technical sustainability of the application is defined by its ability to remain 
 ### KPI's
 As suggested by,  An and Galera-Zarco, 2025, technology is one of the many ways that can be used to tackle food waste. The system allows owners to register products, record stock and monitor inventory levels while tracking expired products. The impact of the system is evaluated through key performance indicators (KPI’s) listed in the table below. The KPI’s compare the process introduced by the Smart Spaza with the traditional manual inventory management process. Note, these are proposed evaluation measures, not verified experimental results. Also these KPI’s are based on the general process of a spaza shop, not unique to a specific spaza shop
 
+
 | KPI | Before Smart Spaza | Expected after Smart Spaza |
 |---|---|---|
 |Time taken to identify available stock|Manual checking of shelves and recorded by being written down. Written down information takes a while to process|Information shown using a dashboard with regular live updates |
@@ -180,12 +181,13 @@ As suggested by,  An and Galera-Zarco, 2025, technology is one of the many ways 
 |Frequency of stockouts|Stockouts may only be identified when products run out |Using the supply chain model, low stock alerts used to base on inventory class of inventory. Class A, B or C|
 |Expired product identification |Done through physical inspection|System sends expired food alert|
 
+The methodology behind the the KPI is not based on experiments but based on inventory management systems. Due to time constraints the team was unable to gain access to a spaza shop and carry out timed before after KPI's
 ### Individual team contribution 
 | Member | Contribution | Details |
 |---|---|---|
-|KL Mohale| Web tool version 1|Created the first version of the tool, outlining the "skeleton" or "draft" of the front end. Includes inventory A,B,C tables pages. Version 1 CSS style page, HTML page, navigation tab code and support page.|
-|NL Sethole| Web tool version 1|Created the login and registration page. Was also in charge of monitoring final commits onto github|
-|NV Vilakati| Supply chain model| Defined how the web solution will forecast demand, optimize inventory and routes |
-|MG Nsibande| Web tool version 2|Created revised version of web tool version1 by combining work done by the other members. Refined web tools style and inventory tables |
+|KL Mohale| Web tool version 1|Created the first version of the tool, outlining the "skeleton" or "draft" of the front end. Includes inventory A,B,C tables pages. Version 1 CSS style page, HTML page, navigation tab code and support page. Conducted B5 and B6|
+|NL Sethole| Web tool version 1|Created the login and registration page. Was also in charge of monitoring final commits onto github. Conducted B1 and B4|
+|NV Vilakati| Supply chain model| Defined how the web solution will forecast demand, optimize inventory and routes. Conducted B2 |
+|MG Nsibande| Web tool version 2|Created revised version of web tool version1 by combining work done by the other members. Refined web tools style and inventory tables. Conducted B3 and B7 |
 
 
