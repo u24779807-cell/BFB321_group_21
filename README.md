@@ -174,6 +174,18 @@ The tests cover EOQ, safety stock, reorder point, orders per year, expiry classi
 
 The supplied project is a working academic prototype. It currently uses a single shared inventory rather than tenant-separated shop accounts, and it does not yet implement supplier orders, stock receiving, audit history, barcode scanning, email alerts or a live MySQL adapter. The local prototype stores all product rows in one SQLite database. Those capabilities should be implemented and tested before commercial deployment.
 
+### Scalability
+Technical sustainability of the application is defined by its ability to remain operational, secure and maintainable while the technical demands change. The usage of Flask as the backend together with a MySQL database forms the basis for maintaining and further development of the application. Maintenance is done through updates in software and databases, improvement in security and performance monitoring. Moreover, separation of components including front end, back end, database, and API allows easy identification of issues and introduction of innovations without a total overhaul of the application. Testing and maintenance will become important for continued performance of the platform as more products, customers, and shops join it.
+
+### KPI's
+As suggested by,  An and Galera-Zarco, 2025, technology is one of the many ways that can be used to tackle food waste. The system allows owners to register products, record stock and monitor inventory levels while tracking expired products. The impact of the system is evaluated through key performance indicators (KPI’s) listed in the table below. The KPI’s compare the process introduced by the Smart Spaza with the traditional manual inventory management process. Note, these are proposed evaluation measures, not verified experimental results. Also these KPI’s are based on the general process of a spaza shop, not unique to a specific spaza shop
+
+| KPI | Before Smart Spaza | Expected after Smart Spaza |
+|---|---|---|
+|Time taken to identify available stock|Manual checking of shelves and recorded by being written down. Written down information takes a while to process|Information shown using a dashboard with regular live updates |
+|Stock count accuracy|Depends on manual recording, mistakes can happen due to human error|Livestock quantity updates|
+|Frequency of stockouts|Stockouts may only be identified when products run out |Using the supply chain model, low stock alerts used to base on inventory class of inventory. Class A, B or C|
+|Expired product identification |Done through physical inspection|System sends expired food alert|
 
 ### Individual team contribution 
 | Member | Contribution | Details |
