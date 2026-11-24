@@ -134,3 +134,30 @@ KeyError: 'user_id'
 2026-11-24 00:16:10,149- INFO - 127.0.0.1 - - [24/Nov/2026 00:16:10] "GET /support HTTP/1.1" 200 -
 2026-11-24 00:16:10,296- INFO - 127.0.0.1 - - [24/Nov/2026 00:16:10] "GET /static/style.css HTTP/1.1" 304 -
 2026-11-24 00:16:10,356- INFO - 127.0.0.1 - - [24/Nov/2026 00:16:10] "GET /static/images/logo.png HTTP/1.1" 404 -
+2026-11-24 17:32:26,501- INFO - WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5000
+2026-11-24 17:32:26,502- INFO - Press CTRL+C to quit
+2026-11-24 17:32:26,513- INFO -  * Restarting with stat
+2026-11-24 17:32:30,470- WARNING -  * Debugger is active!
+2026-11-24 17:32:30,590- INFO -  * Debugger PIN: 730-305-895
+2026-11-24 17:48:10,750- INFO - WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5000
+2026-11-24 17:48:10,751- INFO - Press CTRL+C to quit
+2026-11-24 17:49:50,752- INFO - WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5001
+2026-11-24 17:49:50,752- INFO - Press CTRL+C to quit
+2026-11-24 17:51:27,309- INFO - 127.0.0.1 - - [24/Nov/2026 17:51:27] "GET / HTTP/1.1" 200 -
+2026-11-24 17:51:27,768- INFO - 127.0.0.1 - - [24/Nov/2026 17:51:27] "GET /static/images/logo.png HTTP/1.1" 404 -
+2026-11-24 17:51:29,135- INFO - 127.0.0.1 - - [24/Nov/2026 17:51:29] "GET /static/style.css HTTP/1.1" 200 -
+2026-11-24 17:51:29,594- INFO - 127.0.0.1 - - [24/Nov/2026 17:51:29] "GET /favicon.ico HTTP/1.1" 404 -
+2026-11-24 18:00:06,810- INFO - WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.143.120:5000
+2026-11-24 18:00:06,810- INFO - Press CTRL+C to quit
+2026-11-24 18:14:17,552 - INFO - WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5000
+2026-11-24 18:14:17,553 - INFO - Press CTRL+C to quit
+2026-11-24 18:14:17,558 - INFO -  * Restarting with stat
+2026-11-24 18:14:18,664 - WARNING -  * Debugger is active!
+2026-11-24 18:14:18,785 - INFO -  * Debugger PIN: 730-305-895

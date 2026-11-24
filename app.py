@@ -45,11 +45,14 @@ if environment == "production":
     app.config["ENV"]="production"
     config.Production.validate()
 
-logging.basicConfig (
-    filename="app.log",
+logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s- %(levelname)s - %(message)s"
-    )
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.FileHandler("app.log"),
+        logging.StreamHandler()
+    ]
+)
 
 # ==========================================
 # HELPER FUNCTIONS
@@ -732,4 +735,4 @@ if __name__ == "__main__":
 
     app.run(
         debug=True
-    )
+    ) 
