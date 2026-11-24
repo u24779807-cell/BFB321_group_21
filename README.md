@@ -1,9 +1,12 @@
 # BFB321_group_21
-Members:
-- KL Mohale - 23792788
-- MG Nsibande - 21565326
-- NL Sethole - 24779807
-- NV Vilakati - 22911996
+
+  #### MEMBERS
+| Name | User name | Student number |
+| :---: | :---: | :---: |
+| KL Mohale | Babygurllisa01 | u23792788 |
+| MG Nsibande | | u21565326 |
+|NL Sethole|u24779807-cell|u24779807|
+|NV Vilakati|Notsile567|u22911996|
 ## Project Title: Smart Spaza Food Network 
 ### 1. project description (B4)
 Small food vendors often lack a simple and reliable system for tracking stock and monitoring expiry dates. This can lead to food waste and loss of sales. Therefore, this project focuses on creating an expiry date and stock monitoring system for small food vendors/Tuckshops. The project uses html,css,flask and python with MySQL database for storing and managing information.
@@ -172,5 +175,12 @@ The tests cover EOQ, safety stock, reorder point, orders per year, expiry classi
 The supplied project is a working academic prototype. It currently uses a single shared inventory rather than tenant-separated shop accounts, and it does not yet implement supplier orders, stock receiving, audit history, barcode scanning, email alerts or a live MySQL adapter. The local prototype stores all product rows in one SQLite database. Those capabilities should be implemented and tested before commercial deployment.
 
 
+### Individual team contribution 
+| Member | Contribution | Details |
+|---|---|---|
+|KL Mohale| Web tool version 1|Created the first version of the tool, outlining the "skeleton" or "draft" of the front end. Includes inventory A,B,C tables pages. Version 1 CSS style page, HTML page, navigation tab code and support page.|
+|NL Sethole| Web tool version 1|Created the login and registration page. Was also in charge of monitoring final commits onto github|
+|NV Vilakati| Supply chain model| Defined how the web solution will forecast demand, optimize inventory and routes |
+|MG Nsibande| Web tool version 2|Created revised version of web tool version1 by combining work done by the other members. Refined web tools style and inventory tables |
 
 
